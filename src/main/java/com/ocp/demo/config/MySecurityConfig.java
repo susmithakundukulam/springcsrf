@@ -53,7 +53,13 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder()).dataSource(secDataSource)
 				.usersByUsernameQuery("select username, password, enabled from users where username=?")
 		 .authoritiesByUsernameQuery("select username, role from users where username=?")
-		;
+		;  
 	}  
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+		.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+	}
 
 }
