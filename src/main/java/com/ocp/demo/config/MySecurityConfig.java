@@ -13,12 +13,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	MySuccessHandler mySuccessHandler;
 
 	@Autowired
 	private DataSource secDataSource;
@@ -59,6 +63,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+		//.csrf().disable()
 		
 		.authorizeRequests().anyRequest().authenticated()
 		
@@ -67,7 +72,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 		.formLogin()
 		.loginPage("/empMvc/showLoginPage")
 		.loginProcessingUrl("/authenticateTheUser")//  : springsecurity filters wil handle
-		.defaultSuccessUrl("/empMvc/showLoginPage", true) //after successful login redirect to this url
+		//.defaultSuccessUrl("/empMvc/showLoginPage", true) //after successful login redirect to this url
+		.successHandler(mySuccessHandler)
 		.permitAll()
 		
 		.and()

@@ -13,4 +13,14 @@ public class EmployeeMVCControllerImpl implements EmployeeMVCController{
 		return "employee-page";
 	}
 
+	@Override
+	public String userPage(ModelMap map) {
+		return "user-page";
+	}
+
+	@Override
+	public String adminPage(ModelMap map) {
+		return "admin-page";
+	}
+
 }
