@@ -46,8 +46,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 	 * }
 	 */
 	//-----------------------------------------------------------------------------------------
+	
 	//Incase if you need role and login to be in one table
-
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder()).dataSource(secDataSource)
@@ -59,7 +59,19 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+		
+		.authorizeRequests().anyRequest().authenticated()
+		
+		.and()
+		
+		.formLogin()
+		.loginPage("/empMvc/showLoginPage")
+		.loginProcessingUrl("/authenticateTheUser")//  : springsecurity filters wil handle
+		.defaultSuccessUrl("/empMvc/showLoginPage", true) //after successful login redirect to this url
+		.permitAll()
+		
+		.and()
+		.logout().permitAll(); // /logout : springsecurity filters wil handle
 	}
 
 }
