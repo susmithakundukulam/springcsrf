@@ -12,6 +12,8 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.ocp.demo.model.Users;
+
 @Component
 public class MySuccessHandler implements AuthenticationSuccessHandler{
 	
@@ -20,6 +22,10 @@ public class MySuccessHandler implements AuthenticationSuccessHandler{
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
+		System.out.println("**********************onAuthenticationSuccess***********************");
+
+		 
+		
 		authentication.getAuthorities().forEach(authority -> {
 			if(authority.getAuthority().equals("ROLE_USER")) {
 				try {  

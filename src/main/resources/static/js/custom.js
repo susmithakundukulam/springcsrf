@@ -1,0 +1,6 @@
+function callMe(){
+	alert("hiiii");
+}
+
+
+
